@@ -73,5 +73,5 @@ enum Direction {
 
 /*
 * Less Common Primitives: bigint symbol*/
-const onHundred: bigint = BigInt(100)
-const fname = Symbol()
+// const onHundred: bigint = BigInt(100)
+// const fname = Symbol()
