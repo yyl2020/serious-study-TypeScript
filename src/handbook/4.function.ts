@@ -116,3 +116,25 @@ function greet2(s: string) {
 function greet3<Str extends string>(s: Str){
     console.log('hello' + s)
 }
+
+/*
+* 可选参数(Optional Parameters)
+* */
+// 可选参数
+function f(x?: number) {
+
+}
+// 默认参数
+function f1(x=10) {
+
+}
+// 回调函数中的可选参数(Optional Parameters in Callbacks)
+// 容易犯的错误 为回调编写函数类型时，切勿编写可选参数，除非您打算在不传递该参数的情况下调用该函数
+function myForEach(arr: any[], callback:(arg:any, index?: number)=> void) {
+    for (let i = 0; i < arr.length; i++){
+        callback(arr[i], i)
+    }
+}
+myForEach([1, 2, 3], (a, i) => {
+    console.log(i.toFixed()); // Object is possibly 'undefined'.
+});
