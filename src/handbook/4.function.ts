@@ -138,3 +138,130 @@ function myForEach(arr: any[], callback:(arg:any, index?: number)=> void) {
 myForEach([1, 2, 3], (a, i) => {
     console.log(i.toFixed()); // Object is possibly 'undefined'.
 });
+
+/*
+* 函数重载(function Overloads)
+* */
+function makeDate(t: number):Date
+function makeDate(m: number, d: number, y: number):Date
+// 上面两个是函数重载签名
+function makeDate(mOrt: number, d?: number,y?: number):Date {
+    if (d !== undefined && y !== undefined){
+        return new Date(y, mOrt, d)
+    } else {
+        return new Date(mOrt)
+    }
+}
+const d1 = makeDate(1,2,3)
+const d2 = makeDate(12321)
+// 从外部看不出实现签名，所以要写两个或多个重载签名
+function fn2(x: string): void;
+function fn2() {
+
+}
+// fn2() Expected 1 arguments, but got 0.
+// 实现签名必须兼容重载签名
+function fn3(x: string): string;
+// Return type isn't right
+// function fn3(x: number): boolean; // This overload signature is not compatible with its implementation signature.
+function fn3(x: string | number) {
+    return "oops";
+}
+// 编写优雅的重载
+// bad
+function len(s: string): number;
+function len(arr: any[]): number;
+function len(x: any) {
+    return x.length;
+}
+len(""); // OK
+len([0]); // OK
+// len(Math.random() > 0.5 ? "hello" : [0]); No overload matches this call
+// good
+function goodlen(x: any[] | string) { // 尽可能使用union类型而不是overloads
+    return x.length
+}
+/*
+* 在函数中声明this
+* */
+interface User {
+    admin: boolean
+}
+interface DB {
+    filterUsers(filter: (this: User) => boolean): User[]
+}
+
+function getDB():DB{
+    return {
+        filterUsers: function (filter) {
+            let users: User[]
+            return users
+        }
+    }
+}
+// const getDB: () => DB
+
+const db = getDB()
+const admin = db.filterUsers(function (this: User) {
+    return this.admin
+})
+
+/*
+* 其他需要了解的类型
+* */
+// void 代表函数返回值没有return任何东西
+function noop() {
+    return;
+}
+// object 指的是任何非原始值(primitive)
+
+// unknown 代表任何值，与 any 不同的是 unknown 执行任何操作都是不合法的
+function fn4(a: any) {
+    a.b() // ok
+}
+function fn5(a: unknown) {
+    // a.b() // error
+}
+// never 一些函数从不返回值
+function fail(msg: string): never {
+    throw new Error(msg)
+}
+
+// Function 描述JS中所有函数值上存在的属性，如bind、call、apply
+function doSomething2(f: Function) {
+    f.call(fail,'error')
+}
+/*
+* 剩余参数(Rest Parameters) and Arguments
+* */
+// 剩余参数
+function multiply(n: number, ...m: number[]) {
+    return m.map(x => x * n)
+}
+const a = multiply(1,12,3,4,5,6)
+// arguments
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+arr1.push(...arr2);
+/*
+* 参数解构(parameter destructuring)
+* */
+type ABC = {a: number, b: number, c: number}
+function sum({a, b, c}): ABC {
+    return a + b + c
+}
+sum({a: 1, b: 2, c: 3})
+/*
+* 函数的可分配性
+* */
+type voidFunc = () => void
+const f9: voidFunc = () => {
+    return true // void 不强制函数返回值，能返回任何值，但是会被忽略
+}
+const v1 = f9() // 当返回值被分配给一个变量，会保留void类型
+
+// 特殊情况：当函数字面上定义返回void类型，该函数不能返回任何值
+function f10(): void {
+    // @ts-expect-error
+    // return true;
+}
