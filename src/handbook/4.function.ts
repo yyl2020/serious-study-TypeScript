@@ -262,6 +262,5 @@ const v1 = f9() // 当返回值被分配给一个变量，会保留void类型
 
 // 特殊情况：当函数字面上定义返回void类型，该函数不能返回任何值
 function f10(): void {
-    // @ts-expect-error
     // return true;
 }
