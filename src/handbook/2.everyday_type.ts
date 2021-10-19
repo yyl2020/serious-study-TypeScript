@@ -64,13 +64,23 @@ function live(x?: number | null) {
 /*
 * 枚举 (enum)
 * */
+// 数字枚举(Numeric enums)
+enum Direction1 {
+    UP = 1,
+    Down,
+    Left,
+    Right,
+}
+// 字符串枚举(String enums)
 enum Direction {
     Up = "UP",
     Down = "DOWN",
     Left = "LEFT",
     Right = "RIGHT",
 }
+// 异构枚举:字符串和数字成员可以混合使用，但是不建议使用
 
+// 
 /*
 * Less Common Primitives: bigint symbol*/
 // const onHundred: bigint = BigInt(100)
