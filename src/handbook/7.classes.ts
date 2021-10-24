@@ -262,3 +262,17 @@ class Point2 {
     y = 0;
 }
 const p: Point1 = new Point2() // 这两个类可以相互替代
+
+
+// 声明默认导出
+export function helloWorld() {
+    console.log("hello,world")
+}
+export default class RandomNumberGenerator {}
+
+export type Cats = { breed: string; yearOfBirth: number };
+
+export interface Dogs {
+    breeds: string[];
+    yearOfBirth: number;
+}
